@@ -598,10 +598,10 @@ export default (routesMap: RoutesMap = {}, options: Options = {}) => {
   let _initialDispatch
   let _confirm = null
 
-  _updateScroll = (performedByUser: boolean = true) => {
+  _updateScroll = (performedByUser: boolean = true) => new Promise((resolve) => {
     if (scrollBehavior) {
       if (performedByUser || !scrollBehavior.manual) {
-        scrollBehavior.updateScroll(prevState, nextState)
+        return resolve(scrollBehavior.updateScroll(prevState, nextState))
       }
     }
     else if (__DEV__ && performedByUser) {
@@ -610,7 +610,8 @@ export default (routesMap: RoutesMap = {}, options: Options = {}) => {
         you can call \`updateScroll\``
       )
     }
-  }
+    resolve()
+  })
 
   /* RETURN  */
 
